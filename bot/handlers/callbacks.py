@@ -43,7 +43,7 @@ async def expenses_list(callback: CallbackQuery):
             f"{i}. {exp['description']}\n"
             f"💸 {payer_name} потратил {exp['amount']:.2f} ₽\n"
             f"👥 Участники: {targets}\n"
-            f"🕒 {exp['datetime'][:16]}\n\n"
+            f"🕒 {exp['datetime'][:16].replace('T', ' ')}\n\n"
         )
 
     await callback.message.edit_text(text, reply_markup=get_main_menu_button())

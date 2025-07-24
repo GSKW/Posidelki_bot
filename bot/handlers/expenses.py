@@ -59,13 +59,18 @@ async def process_amount(message: Message, state: FSMContext):
         amount = float(message.text.replace(",", "."))
         if amount <= 0:
             raise ValueError
+        elif amount == abs(float('inf')):
+            raise ZeroDivisionError
     except ValueError:
         await message.answer("❌ Введите корректную сумму (число больше 0)")
+        return
+    except ZeroDivisionError:
+        await message.answer("❌ Чё, умный, да???")
         return
 
     await state.update_data(amount=amount)
     await state.set_state(AddExpense.waiting_for_description)
-    await message.answer("📝 Введите описание расхода (например, 'Ужин в кафе'):")
+    await message.answer("📝 Введите описание расхода (например, 'Пицца'):")
 
 @router.message(AddExpense.waiting_for_description)
 async def process_description(message: Message, state: FSMContext):
